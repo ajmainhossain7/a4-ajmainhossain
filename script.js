@@ -82,3 +82,130 @@ let jobs = [
     status: "not"
   },
 ];
+function renderJobs() {
+
+  const container = document.getElementById("jobsContainer");
+  const noJobs = document.getElementById("noJobs");
+  container.innerHTML = "";
+
+  let filtered = jobs.filter(job => {
+    if (currentTab === "all") return true;
+    if (currentTab === "interview") return job.status === "interview";
+    if (currentTab === "rejected") return job.status === "rejected";
+  });
+
+  const totalJobs = jobs.length;
+  const filteredJobs = filtered.length;
+
+  if (currentTab === "all") {
+    document.getElementById("tabCount").innerText =
+      `${totalJobs} Jobs`;
+  } else {
+    document.getElementById("tabCount").innerText =
+      `${filteredJobs} of ${totalJobs} Jobs`;
+  }
+
+  if (filtered.length === 0) {
+    noJobs.classList.remove("hidden");
+  } else {
+    noJobs.classList.add("hidden");
+  }
+
+  filtered.forEach(job => {
+
+    container.innerHTML += `
+      <div class="bg-white p-6 rounded-lg shadow-sm">
+
+        <div class="flex justify-between items-start">
+          <div>
+            <h3 class="font-semibold text-lg">${job.companyName}</h3>
+            <p class="text-gray-600">${job.position}</p>
+            <p class="text-sm text-gray-500">
+              ${job.location} • ${job.type} • ${job.salary}
+            </p>
+          </div>
+
+          <button onclick="deleteJob(${job.id})"
+            class="hover:text-red-600 cursor-pointer"><i class="fa-regular fa-trash-can"></i></button>
+        </div>
+        <div class="flex justify-between items-center mt-4">
+
+          <!-- STATUS BADGE -->
+          <span class="
+            px-3 py-1 rounded-xs font-medium
+            ${job.status === "interview" ? "bg-green-100 text-green-700" :
+        job.status === "rejected" ? "bg-red-100 text-red-700" :
+          "bg-gray-200 text-gray-700"}
+          ">
+            ${job.status === "interview" ? "Interview" :
+        job.status === "rejected" ? "Rejected" :
+          "Not Applied"}
+          </span>
+
+        </div>
+
+        <p class="my-3 text-gray-600 text-sm">
+          ${job.description}
+        </p>
+        <div class="flex gap-2">
+            <button onclick="updateStatus(${job.id}, 'interview')"
+              class="px-3 py-1  border-2 border-green-600 font-semibold text-green-600 hover:bg-green-300 cursor-pointer rounded">
+              Interview
+            </button>
+
+            <button onclick="updateStatus(${job.id}, 'rejected')"
+              class="px-3 py-1  border-2 border-red-600 font-semibold text-red-600 hover:bg-red-300 cursor-pointer rounded">
+              Rejected
+            </button>
+          </div>
+
+
+      </div>
+    `;
+  });
+
+  updateDashboard();
+}
+
+function updateStatus(id, status) {
+
+  jobs = jobs.map(job => {
+    if (job.id === id) {
+      if (job.status === status) {
+        return job;
+      }
+      job.status = status;
+    }
+
+    return job;
+  });
+
+  renderJobs();
+}
+
+function deleteJob(id) {
+  jobs = jobs.filter(job => job.id !== id);
+  renderJobs();
+}
+
+function updateDashboard() {
+  document.getElementById("totalCount").innerText = jobs.length;
+  document.getElementById("interviewCount").innerText =
+    jobs.filter(j => j.status === "interview").length;
+
+  document.getElementById("rejectedCount").innerText =
+    jobs.filter(j => j.status === "rejected").length;
+}
+
+function changeTab(tab, btn) {
+  currentTab = tab;
+
+  document.querySelectorAll(".tabBtn")
+    .forEach(b => b.classList.remove("activeTab"));
+
+  btn.classList.add("activeTab");
+
+  renderJobs();
+}
+
+renderJobs();
