@@ -12,6 +12,20 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- tailwind cdn -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .tabBtn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 500;
+      background: white;
+      cursor: pointer;
+    }
+
+    .activeTab {
+      background: #3B82F6;
+      color: white;
+    }
+  </style>
 
 </head>
 
@@ -41,9 +55,35 @@
       </div>
 
     </div>
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-semibold">Available Jobs</h2>
+      <span id="tabCount" class="text-sm text-gray-500">8 jobs</span>
+    </div>
+
+    <!-- tabs -->
+    <div class="flex gap-4 mb-6">
+      <button class="tabBtn activeTab">All</button>
+      <button class="tabBtn">Interview</button>
+      <button class="tabBtn">Rejected</button>
+    </div>
+
+    <!-- jobs container -->
+    <div id="jobsContainer" class="space-y-4">
+
+    </div>
+
+    <!-- no jobs card  -->
+    <div id="noJobs" class="hidden">
+      <div class="flex flex-col items-center justify-center  bg-white rounded-lg shadow-sm p-12">
+        <div class="w-20 h-20 mb-4">
+          <img src="./jobs.png" class="w-full">
+        </div>
+        <h3 class="text-lg font-semibold">No jobs available</h3>
+        <p class="text-gray-500 text-sm">Check back soon for new job opportunities</p>
+      </div>
+    </div>
+
   </div>
-
-
 
   <script src="./script.js"></script>
 </body>
