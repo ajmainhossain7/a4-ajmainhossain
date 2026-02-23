@@ -129,8 +129,6 @@ function renderJobs() {
             class="hover:text-red-600 cursor-pointer"><i class="fa-regular fa-trash-can"></i></button>
         </div>
         <div class="flex justify-between items-center mt-4">
-
-          <!-- STATUS BADGE -->
           <span class="
             px-3 py-1 rounded-xs font-medium
             ${job.status === "interview" ? "bg-green-100 text-green-700" :
